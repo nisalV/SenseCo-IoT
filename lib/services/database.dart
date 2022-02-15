@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
 
@@ -15,11 +16,6 @@ class DatabaseService {
     });
   }
 
-  // get data stream
-  Stream<QuerySnapshot> get users {
-    return userCollection.snapshots();
-  }
-
   Future updateName(String name) async {
     return await userCollection.doc(uid).update({
       'name' : name,
@@ -30,4 +26,9 @@ class DatabaseService {
     Map<String,Object> linkData = {'sheets.$description' : link};
     return await userCollection.doc(uid).update(linkData);
   }
+
+  getUserId(){
+    return uid;
+  }
+
 }

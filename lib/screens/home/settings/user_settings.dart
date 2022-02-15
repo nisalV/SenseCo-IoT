@@ -167,7 +167,7 @@ class _UserSettingsState extends State<UserSettings> {
             ),
 
             SizedBox(
-              height: 25,
+              height: 20,
             ),
 
             // Google Sheet link and link description upload
@@ -204,7 +204,7 @@ class _UserSettingsState extends State<UserSettings> {
                                 children: [
                                   TextFormField(
                                     controller: _linkTextController,
-                                    maxLines: 1,
+                                    maxLength: 50,
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder(),
                                         focusedBorder: OutlineInputBorder(
@@ -213,7 +213,7 @@ class _UserSettingsState extends State<UserSettings> {
                                               width: 2.0),
                                         ),
                                         labelText:
-                                            'Google Sheet link description',
+                                            'Google Sheet description',
                                         labelStyle: TextStyle(
                                           fontSize: 18.0,
                                           color: Colors.redAccent,
@@ -251,7 +251,7 @@ class _UserSettingsState extends State<UserSettings> {
                                     },
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: 15,
                                   ),
                                   TextFormField(
                                     controller: _linkController,
@@ -263,7 +263,7 @@ class _UserSettingsState extends State<UserSettings> {
                                               color: Colors.redAccent,
                                               width: 2.0),
                                         ),
-                                        labelText: 'Google Sheet link',
+                                        labelText: 'Google Sheet script link',
                                         labelStyle: TextStyle(
                                           fontSize: 18.0,
                                           color: Colors.redAccent,

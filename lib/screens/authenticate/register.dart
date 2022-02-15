@@ -112,6 +112,7 @@ class _RegisterState extends State<Register> {
                   TextFormField(
                     controller: emailController,
                     maxLines: 1,
+                    enableSuggestions: true,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
@@ -228,76 +229,86 @@ class _RegisterState extends State<Register> {
 
                   // sign in button
 
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.redAccent,
-                      elevation: 3.0,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                          fontSize: 20.0,
+                  Row(
+                    children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ))
                         ),
-                      ),
-                    ),
-                    onPressed: () async {
-                      final isValid = _formKey.currentState!.validate();
-
-                      if (isValid) {
-                        FocusScope.of(context).unfocus();
-                        _formKey.currentState!.save();
-
-                        try {
-                          loading = true;
-                          dynamic result = await _auth.RegisterUser(userController.text,
-                              emailController.text, password);
-                          if (result == null) {
-                            setState(() => loading = true);
-                            final snackBar = SnackBar(
-                              content: Text(
-                                'could not register',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              backgroundColor: Colors.red,
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else {
-                            setState(() => loading = false);
-                            final snackBar = SnackBar(
-                              content: Text(
-                                'Registered',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              backgroundColor: Colors.green,
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          }
-                        } catch (e) {
-                          setState(() => loading = false);
-                          final snackBar = SnackBar(
-                            content: Text(
-                              'could not register',
-                              style: TextStyle(
-                                fontSize: 20.0,
-                              ),
-                              textAlign: TextAlign.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.white,
                             ),
-                            backgroundColor: Colors.red,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
-                    },
+                          ),
+                        ),
+                        onPressed: () async {
+                          final isValid = _formKey.currentState!.validate();
+
+                          if (isValid) {
+                            FocusScope.of(context).unfocus();
+                            _formKey.currentState!.save();
+
+                            try {
+                              loading = true;
+                              dynamic result = await _auth.RegisterUser(userController.text,
+                                  emailController.text, password);
+                              if (result == null) {
+                                setState(() => loading = true);
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    'could not register',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  backgroundColor: Colors.red,
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              } else {
+                                setState(() => loading = false);
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    'Registered',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  backgroundColor: Colors.green,
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            } catch (e) {
+                              setState(() => loading = false);
+                              final snackBar = SnackBar(
+                                content: Text(
+                                  'could not register',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                backgroundColor: Colors.red,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                          }
+                        },
+                      ),
+                    ),]
                   )
                 ],
               )),

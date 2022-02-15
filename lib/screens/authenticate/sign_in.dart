@@ -62,6 +62,7 @@ class _SignInState extends State<SignIn> {
                   TextFormField(
                     controller: emailController,
                     maxLines: 1,
+                    enableSuggestions: true,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
@@ -175,75 +176,86 @@ class _SignInState extends State<SignIn> {
 
                   // sign in button
 
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.redAccent,
-                      elevation: 3.0,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Sign in',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                    onPressed: () async {
-                      final isValid = _formKey.currentState!.validate();
-
-                      if (isValid) {
-                        FocusScope.of(context).unfocus();
-                        _formKey.currentState!.save();
-
-                        try {
-                          setState(() => loading = true);
-                          dynamic result = await _auth.signIn(emailController.text, password);
-                          if (result == null) {
-                            setState(() => loading = false);
-                            final snackBar = SnackBar(
-                              content: Text(
-                                'could not sign in',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              backgroundColor: Colors.red,
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          }
-                          else {
-                            setState(() => loading = false);
-                            final snackBar = SnackBar(
-                              content: Text(
-                                'signed in',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              backgroundColor: Colors.green,
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          }
-
-                        } catch (e) {
-                          setState(() => loading = false);
-                          final snackBar = SnackBar(
-                            content: Text(
-                              'could not sign in',
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: TextButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ))
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Sign in',
                               style: TextStyle(
                                 fontSize: 20.0,
+                                color: Colors.white,
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                            backgroundColor: Colors.red,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      }
-                    },
+                          ),
+                          onPressed: () async {
+                            final isValid = _formKey.currentState!.validate();
+
+                            if (isValid) {
+                              FocusScope.of(context).unfocus();
+                              _formKey.currentState!.save();
+
+                              try {
+                                setState(() => loading = true);
+                                dynamic result = await _auth.signIn(emailController.text, password);
+                                if (result == null) {
+                                  setState(() => loading = false);
+                                  final snackBar = SnackBar(
+                                    content: Text(
+                                      'could not sign in',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    backgroundColor: Colors.red,
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                }
+                                else {
+                                  setState(() => loading = false);
+                                  final snackBar = SnackBar(
+                                    content: Text(
+                                      'signed in',
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    backgroundColor: Colors.green,
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                }
+
+                              } catch (e) {
+                                setState(() => loading = false);
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    'could not sign in',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  backgroundColor: Colors.red,
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   )
                 ],
               )),
