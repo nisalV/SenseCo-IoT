@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class DatabaseService {
 
   final String uid;
-  String nameState = "";
+  String nameState = "proceed";
   DatabaseService({required this.uid});
 
   // collection reference
@@ -39,14 +39,12 @@ class DatabaseService {
       Map<String, dynamic> sheets = map['sheets'];
       if (sheets.containsKey(description)) {
         nameState = "description";
+      } else {
+        nameState = "proceed";
       }
-      if (sheets.containsKey(link)) {
-        nameState = "sheet";
-      }
-    } else {
-      nameState = "proceed";
     }
     });
+    print(nameState);
     return nameState;
   }
 

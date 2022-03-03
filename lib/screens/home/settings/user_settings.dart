@@ -325,7 +325,8 @@ class _UserSettingsState extends State<UserSettings> {
                                     String checkLink = await DatabaseService(
                                             uid: _auth.currentUser!.uid)
                                         .doesDataUrlExist(
-                                            _linkTextController.text, _linkController.text);
+                                            _linkTextController.text,
+                                            _linkController.text);
 
                                     if (checkLink == "proceed") {
                                       try {
@@ -366,7 +367,6 @@ class _UserSettingsState extends State<UserSettings> {
                                         setState(() => loading = false);
                                       }
                                     } else {
-
                                       if (checkLink == "description") {
                                         final snackBar = SnackBar(
                                           content: Text(
@@ -383,8 +383,6 @@ class _UserSettingsState extends State<UserSettings> {
                                         _linkTextController.clear();
                                         setState(() => loading = false);
                                       }
-
-
                                     }
                                   }
                                 },
