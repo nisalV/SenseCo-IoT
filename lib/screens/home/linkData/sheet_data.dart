@@ -101,6 +101,7 @@ class _SheetDataState extends State<SheetData> {
                       SizedBox(
                         height: 90,
                         child: ListView.builder(
+                          
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: headers.length,

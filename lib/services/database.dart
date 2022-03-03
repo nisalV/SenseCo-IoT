@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class DatabaseService {
 
   final String uid;
+  String nameState = "";
   DatabaseService({required this.uid});
 
   // collection reference
@@ -29,6 +30,24 @@ class DatabaseService {
 
   getUserId(){
     return uid;
+  }
+
+  Future doesDataUrlExist(String description, String link) async {
+    await userCollection.doc(uid).get().then((snapshot) {
+    Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
+    if(map.containsKey('sheets')){
+      Map<String, dynamic> sheets = map['sheets'];
+      if (sheets.containsKey(description)) {
+        nameState = "description";
+      }
+      if (sheets.containsKey(link)) {
+        nameState = "sheet";
+      }
+    } else {
+      nameState = "proceed";
+    }
+    });
+    return nameState;
   }
 
 }

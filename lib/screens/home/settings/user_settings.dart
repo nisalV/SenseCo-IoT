@@ -212,8 +212,7 @@ class _UserSettingsState extends State<UserSettings> {
                                               color: Colors.redAccent,
                                               width: 2.0),
                                         ),
-                                        labelText:
-                                            'Google Sheet description',
+                                        labelText: 'Google Sheet description',
                                         labelStyle: TextStyle(
                                           fontSize: 18.0,
                                           color: Colors.redAccent,
@@ -222,21 +221,21 @@ class _UserSettingsState extends State<UserSettings> {
                                           Icons.add_comment,
                                           color: Colors.redAccent,
                                         ),
-                                        suffixIcon:
-                                            _linkTextController.text.isEmpty
-                                                ? Container(
-                                                    width: 0,
-                                                  )
-                                                : IconButton(
-                                                    splashRadius: 1.0,
-                                                    onPressed: () {
-                                                      _linkTextController.clear();
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.close,
-                                                      color: Colors.redAccent,
-                                                    ),
-                                                  )),
+                                        suffixIcon: _linkTextController
+                                                .text.isEmpty
+                                            ? Container(
+                                                width: 0,
+                                              )
+                                            : IconButton(
+                                                splashRadius: 1.0,
+                                                onPressed: () {
+                                                  _linkTextController.clear();
+                                                },
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  color: Colors.redAccent,
+                                                ),
+                                              )),
                                     keyboardType: TextInputType.name,
                                     textInputAction: TextInputAction.done,
                                     validator: (value) {
@@ -292,6 +291,12 @@ class _UserSettingsState extends State<UserSettings> {
                                       if (value!.isEmpty ||
                                           _linkController.text.trim().isEmpty) {
                                         return 'Enter a link';
+                                      }
+
+                                      if (!value.startsWith(
+                                              "https://script.google.com/macros/s/") ||
+                                          !value.endsWith("/exec")) {
+                                        return 'Format error';
                                       } else {
                                         return null;
                                       }
@@ -315,40 +320,71 @@ class _UserSettingsState extends State<UserSettings> {
                                     FocusScope.of(context).unfocus();
                                     _formKey2.currentState!.save();
 
-                                    try {
-                                      setState(() => loading = true);
-                                      await DatabaseService(
-                                              uid: _auth.currentUser!.uid).updateLink(_linkTextController.text, _linkController.text);
+                                    setState(() => loading = true);
 
-                                      final snackBar = SnackBar(
-                                        content: Text(
-                                          'Google Sheet link added',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
+                                    String checkLink = await DatabaseService(
+                                            uid: _auth.currentUser!.uid)
+                                        .doesDataUrlExist(
+                                            _linkTextController.text, _linkController.text);
+
+                                    if (checkLink == "proceed") {
+                                      try {
+                                        await DatabaseService(
+                                                uid: _auth.currentUser!.uid)
+                                            .updateLink(
+                                                _linkTextController.text,
+                                                _linkController.text);
+
+                                        final snackBar = SnackBar(
+                                          content: Text(
+                                            'Google Sheet link added',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        backgroundColor: Colors.green,
-                                      );
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                    } catch (e) {
-                                      final snackBar = SnackBar(
-                                        content: Text(
-                                          'could not complete',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
+                                          backgroundColor: Colors.green,
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } catch (e) {
+                                        final snackBar = SnackBar(
+                                          content: Text(
+                                            'could not complete',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        backgroundColor: Colors.red,
-                                      );
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                    } finally {
-                                      _linkController.clear();
-                                      _linkTextController.clear();
-                                      setState(() => loading = false);
+                                          backgroundColor: Colors.red,
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      } finally {
+                                        _linkController.clear();
+                                        _linkTextController.clear();
+                                        setState(() => loading = false);
+                                      }
+                                    } else {
+
+                                      if (checkLink == "description") {
+                                        final snackBar = SnackBar(
+                                          content: Text(
+                                            'link description already exists',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                        _linkTextController.clear();
+                                        setState(() => loading = false);
+                                      }
+
+
                                     }
                                   }
                                 },
