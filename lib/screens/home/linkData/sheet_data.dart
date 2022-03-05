@@ -39,7 +39,7 @@ class _SheetDataState extends State<SheetData> {
 
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 3), (timer) {
+    Timer.periodic(Duration(seconds: 10), (timer) {
       fetchData();
     });
     super.initState();

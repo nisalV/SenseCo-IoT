@@ -44,7 +44,6 @@ class DatabaseService {
       }
     }
     });
-    print(nameState);
     return nameState;
   }
 
