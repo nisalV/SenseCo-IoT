@@ -23,16 +23,6 @@ class _HomeState extends State<Home> {
   var mapKeys = [];
   var mapValues = [];
 
-  Future fetchData() async {
-    final response = await http.get(Uri.parse(
-        'https://script.google.com/macros/s/AKfycbzSwuOL0zfT-aOUs3JLxBeTBmJvY6kGWI_k7xnLm-_4vUIh-yes2PYquDVcWb_s3Wob-w/exec'));
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
-
   @override
   initState() {
     super.initState();
@@ -171,7 +161,7 @@ class _HomeState extends State<Home> {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SheetData(_auth.currentUser!.uid,mapKeys[index],mapValues[index])));
                             },
                             onLongPress: () {
-                              print("pressed");
+                              print(mapValues[index]);
                             },
                             child: Card(
                               elevation: 0.0,

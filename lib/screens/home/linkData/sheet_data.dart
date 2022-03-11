@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -21,25 +21,28 @@ class _SheetDataState extends State<SheetData> {
   Map data = {};
   List headers = [];
   List values = [];
+  List<double> plotValues = [];
+  int pos = -1;
+  double? width;
+  double? height;
+  int canPlot = -1;
 
   final StreamController<Map> _streamController = StreamController();
 
   Future<void> fetchData() async {
     final response = await get(Uri.parse(widget.url));
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
       Map sheetData = jsonDecode(response.body);
       try {
         _streamController.sink.add(sheetData);
-      } catch (e) {
-      }
+      } catch (e) {}
     }
   }
 
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 10), (timer) {
+    print(widget.url);
+    Timer.periodic(Duration(seconds: 5), (timer) {
       fetchData();
     });
     super.initState();
@@ -65,11 +68,21 @@ class _SheetDataState extends State<SheetData> {
     setState(() {
       headers;
       values;
+      pos;
+      plotValues;
+      canPlot;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      width = MediaQuery.of(context).size.width.round() - 20 as double?;
+      height = (width! * 0.7) - 70;
+      plotValues;
+      canPlot;
+    });
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
@@ -81,6 +94,8 @@ class _SheetDataState extends State<SheetData> {
             stream: _streamController.stream,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Center(child: Text('No Connection Message'));
                 case ConnectionState.waiting:
                   return Center(
                     child: CircularProgressIndicator(),
@@ -94,6 +109,19 @@ class _SheetDataState extends State<SheetData> {
                     headers = snapshot.data!.keys.toList();
                     values = snapshot.data!.values.toList();
                     print(values.toString());
+                    String? selectedItem;
+                    if (pos != -1) {
+                      try {
+                        double value = double.parse(values[pos]);
+                        plotValues.add(value);
+canPlot = 1;
+                        print(plotValues);
+                      } catch (e) {
+                        print("cant parse");
+                        canPlot = 2;
+                      }
+                    }
+
                     return Column(children: [
                       SizedBox(
                         height: 6,
@@ -101,7 +129,6 @@ class _SheetDataState extends State<SheetData> {
                       SizedBox(
                         height: 90,
                         child: ListView.builder(
-                          
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: headers.length,
@@ -136,6 +163,87 @@ class _SheetDataState extends State<SheetData> {
                           },
                         ),
                       ),
+                      SizedBox(width: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 40),
+                        child: Center(
+                          child: SizedBox(
+                            height: 50,
+                            child: DropdownButtonFormField<String>(
+                              focusColor: Color(0x0000ffff),
+                              iconEnabledColor: Colors.redAccent,
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.add_chart,
+                                    size: 24,
+                                    color: Colors.redAccent,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.redAccent,
+                                      width: 2.0),
+                              )),
+
+                              value: selectedItem,
+                              hint: Text("Select a chart attribute"),
+                              items: headers
+                                  .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(fontSize: 15),
+                                      )))
+                                  .toList(),
+                              onChanged: (String? item) {
+                                setState(() {
+                                  selectedItem = item;
+                                  plotValues.clear();
+                                  pos = headers
+                                      .indexWhere((element) => element == item);
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      //Text(plotValues.toString()),
+                      if (canPlot == 1) Center(
+                        child: SizedBox(
+                          width: width,
+                          height: height,
+                          child: Card(
+                            elevation: 6,
+                            color: Color(0xFFF1F1F1),
+                            shadowColor: Color(0xFF363535),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 10, 2, 12),
+                              child: Sparkline(
+                                lineColor: Colors.black38,
+                                pointsMode: PointsMode.last,
+                                pointSize: 5.0,
+                                lineWidth: 2.0,
+                                pointColor: Colors.redAccent,
+                                kLine: const ['max', 'min', 'first', 'last'],
+                                enableGridLines: true,
+                                data: plotValues,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (canPlot == 2) Center(
+                        child: Text("Can only plot values!",style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.red,
+                        ),),
+                      ),
+
                     ]);
                   }
               }
