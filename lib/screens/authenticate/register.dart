@@ -268,7 +268,7 @@ class _RegisterState extends State<Register> {
                                   content: Text(
                                     'could not register',
                                     style: TextStyle(
-                                      fontSize: 20.0,
+                                      fontSize: 15.0,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -282,7 +282,7 @@ class _RegisterState extends State<Register> {
                                   content: Text(
                                     'Registered',
                                     style: TextStyle(
-                                      fontSize: 20.0,
+                                      fontSize: 15.0,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -297,7 +297,7 @@ class _RegisterState extends State<Register> {
                                 content: Text(
                                   'could not register',
                                   style: TextStyle(
-                                    fontSize: 20.0,
+                                    fontSize: 15.0,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),

@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
                     content: Text(
                       'Signed out',
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 15.0,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -175,7 +175,8 @@ class _HomeState extends State<Home> {
                                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                       child: Text(mapKeys[index],
                                       style: TextStyle(
-                                        fontSize: 15
+                                        fontSize: 15,
+                                        color: Colors.black,
                                       ),),
                                     ),
                                   ),

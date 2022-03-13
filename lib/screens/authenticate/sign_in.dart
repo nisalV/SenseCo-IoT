@@ -214,7 +214,7 @@ class _SignInState extends State<SignIn> {
                                     content: Text(
                                       'could not sign in',
                                       style: TextStyle(
-                                        fontSize: 20.0,
+                                        fontSize: 15.0,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -228,7 +228,7 @@ class _SignInState extends State<SignIn> {
                                     content: Text(
                                       'signed in',
                                       style: TextStyle(
-                                        fontSize: 20.0,
+                                        fontSize: 15.0,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -243,7 +243,7 @@ class _SignInState extends State<SignIn> {
                                   content: Text(
                                     'could not sign in',
                                     style: TextStyle(
-                                      fontSize: 20.0,
+                                      fontSize: 15.0,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),

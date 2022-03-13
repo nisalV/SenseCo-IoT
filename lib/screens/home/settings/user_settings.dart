@@ -340,7 +340,7 @@ class _UserSettingsState extends State<UserSettings> {
                                           content: Text(
                                             'Google Sheet link added',
                                             style: TextStyle(
-                                              fontSize: 20.0,
+                                              fontSize: 15.0,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -353,7 +353,7 @@ class _UserSettingsState extends State<UserSettings> {
                                           content: Text(
                                             'could not complete',
                                             style: TextStyle(
-                                              fontSize: 20.0,
+                                              fontSize: 15.0,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
@@ -372,7 +372,7 @@ class _UserSettingsState extends State<UserSettings> {
                                           content: Text(
                                             'link description already exists',
                                             style: TextStyle(
-                                              fontSize: 20.0,
+                                              fontSize: 15.0,
                                             ),
                                             textAlign: TextAlign.center,
                                           ),
