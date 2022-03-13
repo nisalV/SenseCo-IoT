@@ -60,4 +60,17 @@ class AuthService {
       return null;
     }
   }
+
+  Future resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      //print(e.message);
+    }
+  }
+  Future checkIfEmailExists(String email) async {
+    try {
+      await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+    } catch (e) {}
+  }
 }

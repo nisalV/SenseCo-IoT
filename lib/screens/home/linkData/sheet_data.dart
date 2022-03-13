@@ -136,20 +136,7 @@ class _SheetDataState extends State<SheetData> {
                                           splashRadius: 15.0,
                                           onPressed: () {
                                             Clipboard.setData(ClipboardData(
-                                                text: widget.sheetName)).whenComplete(() {
-                                              final snackBar = SnackBar(
-                                                content: Text(
-                                                  'Script name copied to clipboard',
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                backgroundColor: Colors.green,
-                                              );
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
-                                            });
+                                                text: widget.sheetName));
                                           },
                                           icon: Icon(
                                             Icons.copy,
@@ -182,21 +169,7 @@ class _SheetDataState extends State<SheetData> {
                                           splashRadius: 15.0,
                                           onPressed: () {
                                             Clipboard.setData(ClipboardData(
-                                                    text: widget.url))
-                                                .whenComplete(() {
-                                              final snackBar = SnackBar(
-                                                content: Text(
-                                                  'Script link copied to clipboard',
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                backgroundColor: Colors.green,
-                                              );
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
-                                            });
+                                                    text: widget.url));
                                           },
                                           icon: Icon(
                                             Icons.copy,
